@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: ai-services-bot
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - config/.env
+    restart: unless-stopped
+    command: tail -f /dev/null  # Keep container running
+
+  # Optional: Add PostgreSQL if scaling beyond SQLite
+  # db:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_DB: ai_services
+  #     POSTGRES_USER: bot
+  #     POSTGRES_PASSWORD: your_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+# volumes:
+#   postgres_data:
